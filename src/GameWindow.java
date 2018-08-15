@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -44,7 +46,19 @@ public class GameWindow extends JFrame {
 
             }
         });
-        this.setSize(600,800);
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                canvas.keyPressed(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                canvas.keyReleased(e);
+            }
+        });
+
+        this.setSize(600, 800);
         this.setResizable(false);
         this.setTitle("Micro-war");
 
@@ -52,5 +66,18 @@ public class GameWindow extends JFrame {
         canvas = new GameCanvas();
         this.setContentPane(canvas);
         this.setVisible(true);
+    }
+
+    long lastTimeRender = 0;
+
+    void mainLoop() {
+        while (true) {
+            long currentTime = System.nanoTime();
+            if (currentTime - lastTimeRender >= 17_000_000) {
+                canvas.run();
+                canvas.render();
+                lastTimeRender = currentTime;
+            }
+        }
     }
 }

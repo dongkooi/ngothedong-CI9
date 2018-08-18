@@ -49,12 +49,12 @@ public class GameWindow extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                canvas.keyPressed(e);
+                canvas.inputManager.keyPressed(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                canvas.keyReleased(e);
+                canvas.inputManager.keyReleased(e);
             }
         });
 
@@ -69,6 +69,7 @@ public class GameWindow extends JFrame {
     }
 
     long lastTimeRender = 0;
+    long currentTime = 0;
 
     void mainLoop() {
         while (true) {

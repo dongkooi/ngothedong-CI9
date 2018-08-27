@@ -12,14 +12,11 @@ import java.util.Random;
 public class GameCanvas extends JPanel {
     Image background;
 
-//    int count;
     int enemySpawnCount;
 
     ArrayList<PlayerBullet> bullets;
     ArrayList<Enemy> enemies;
 
-
-//    boolean shootlock = false;
 
     BufferedImage backBuffer;
     Graphics backBufferGraphic;
@@ -32,28 +29,13 @@ public class GameCanvas extends JPanel {
         random = new Random();
         inputManager = new InputManager();
         bullets = new ArrayList<>();
-        PlayerBullet b1 = new PlayerBullet(300, 700);
-        PlayerBullet b2 = new PlayerBullet(600, 600);
         enemies = new ArrayList<>();
-//        Enemy e1 = new Enemy();
-//        e1.playerX = 150;
-//        e1.playerY = 200;
-//
-//        Enemy e2 = new Enemy();
-//        e2.playerX = 300;
-//        e2.playerY = 200;
-//
-//        Enemy e3 = new Enemy();
-//        e3.playerX = 450;
-//        e3.playerY = 200;
 
         player = new Player(268, 660);
+        player.bullets = this.bullets;
         player.inputManager = inputManager;
+
         background = ImageUtil.load("images/background/background.png");
-
-//        bullets.add(b1);
-//        bullets.add(b2);
-
 
         backBuffer = new BufferedImage(600, 800, BufferedImage.TYPE_INT_ARGB);
         backBufferGraphic = backBuffer.getGraphics();
@@ -66,10 +48,8 @@ public class GameCanvas extends JPanel {
     }
 
 
-
-
     void run() {
-        player.run(bullets);
+        player.run();
         for (PlayerBullet b : bullets) {
             b.run();
         }
@@ -84,21 +64,6 @@ public class GameCanvas extends JPanel {
             Enemy enemy = new Enemy(posX, 0);
             enemies.add(enemy);
         }
-
-
-//        if (inputManager.xPressed && !shootlock) {
-//            PlayerBullet newb = new PlayerBullet(player.x, player.y);
-//            bullets.add(newb);
-//            shootlock = true;
-//
-//        }
-//        if (shootlock) {
-//            count++;
-//            if (count > 15) {
-//                shootlock = false;
-//                count = 0;
-//            }
-//        }
 
     }
 

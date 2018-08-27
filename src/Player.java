@@ -3,53 +3,55 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
-    int x;
-    int y;
+    Vector2D position;
+
     int count;
     Image image;
     InputManager inputManager;
     boolean shootlock = false;
+    ArrayList<PlayerBullet> bullets;
 
     public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.position = new Vector2D(x, y);
         this.image = ImageUtil.load("images/player/MB-69/player1.png");
     }
 
     // Method
     void render(Graphics g) {
-        g.drawImage(this.image, this.x, this.y, null);
+        g.drawImage(this.image, (int) this.position.x, (int) this.position.y, null);
     }
 
-    void run(ArrayList<PlayerBullet> bullets) {
+    void run() {
+        this.move();
+        this.shoot();
+    }
+
+    private void move() {
+        Vector2D velocity = new Vector2D();
         if (inputManager.rightPressed) {
-            this.x += 5;
+            velocity.x += 5;
         }
         if (inputManager.leftPressed) {
-            this.x -= 5;
+            velocity.x -= 5;
         }
         if (inputManager.upPressed) {
-            this.y -= 5;
+            velocity.y -= 5;
         }
         if (inputManager.downPressed) {
-            this.y += 5;
+            velocity.y += 5;
         }
+        this.position.addUp(velocity);
+    }
 
+
+    private void shoot() {
         if (inputManager.xPressed && !shootlock) {
-            PlayerBullet newb = new PlayerBullet(this.x, this.y);
-            bullets.add(newb);
-            shootlock = true;
-
-        }
-        for (PlayerBullet b : bullets) {
-            b.y -= 5;
-        }
-        if (shootlock) {
-            count++;
-            if (count > 15) {
-                shootlock = false;
-                count = 0;
-            }
+            PlayerBullet newb = new PlayerBullet((int) this.position.x, (int) this.position.y);
+            this.bullets.add(newb);
+            this.shootlock = true;
         }
     }
+    //        for (PlayerBullet b : bullets) {
+//            b.y -= 5;
+//        }
 }
